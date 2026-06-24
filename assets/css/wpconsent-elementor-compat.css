@@ -1,0 +1,12 @@
+.wpconsent-iframe-placeholder {
+    width: 100%;
+}
+.wpconsent-iframe-placeholder .wpconsent-iframe-accept-button {
+    background-color: #fff;
+    color: #000;
+    text-wrap: wrap;
+}
+
+.lx-wpconsent-blocked-widget > .wpconsent-iframe-placeholder {
+    min-height: 300px;
+}
