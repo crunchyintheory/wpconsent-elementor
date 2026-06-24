@@ -10,3 +10,8 @@
 .lx-wpconsent-blocked-widget > .wpconsent-iframe-placeholder {
     min-height: 300px;
 }
+
+.lx-wpconsent-blocked-widget.lx-wpconsent-ratio-placeholder > .wpconsent-iframe-placeholder {
+    aspect-ratio: var(--aspect-ratio);
+    min-height: 0;
+}

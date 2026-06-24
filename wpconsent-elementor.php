@@ -5,6 +5,7 @@
  * Author: Sigrid Rittby
  * License: GPLv2
  * Requires Plugins: wpconsent-cookies-banner-privacy-suite
+ * Version: 1.0
  */
 
 if (!defined('ABSPATH')) {
@@ -31,7 +32,7 @@ function lx_wpconsent_force_service_detection(array $data): void
     $services_needed = (new WPConsent_Services())->get_services($all);
 
     foreach($categories as $category => $services) {
-        $services_diff = array_diff($services, array_column($data["scripts"][$category], "name"));
+        $services_diff = array_diff($services, array_column($data["scripts"][$category] ?? [], "name"));
         foreach($services_diff as $service) {
             $data["scripts"][$category][] = [
                 "name" => $service,
@@ -59,18 +60,12 @@ function lx_wpconsent_admin_notices(): void
     ?>
     <?php if(get_option("elementor_local_google_fonts", 0) != 1): ?>
     <div class="notice notice-warning">
-        Your site is loading remote Google Fonts and is not GDPR-compliant. <a href="<?php echo get_admin_url("/admin.php?page=elementor-settings#tab-performance"); ?>">Click here</a> to fix.
+        Your site is loading remote Google Fonts and is not GDPR-compliant. <a href="<?php echo get_admin_url(null, "/admin.php?page=elementor-settings#tab-performance"); ?>">Click here</a> to fix.
     </div>
     <?php endif; ?>
     <?php
 }
 add_action("admin_notices", "lx_wpconsent_admin_notices");
-
-/*function lx_wpconsent_scanner_intercept(array $data, string $source): array
-{
-
-}
-add_action("wpconsent_scan_data_saved", "lx_wpconsent_scanner_intercept", 1, 2);*/
 
 function lx_wpconsent_scripts(): void
 {

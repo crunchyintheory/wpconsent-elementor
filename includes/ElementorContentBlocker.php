@@ -30,13 +30,21 @@ function lx_wpconsent_elementor_widget_filter(Widget_Base $widget): void
     else {
         $w = $widgets[$widget->get_name()];
         $content_placeholder = new WPConsent_Content_Placeholder();
+        $io = $widget->get_settings_for_display("image_overlay");
+        if(is_array($io)) $io = $io["url"];
         $placeholder_html = $content_placeholder->get_placeholder_html(
             '',
             apply_filters("lx/elementor/blocked_widget_service", $w["service"], $widget),
             apply_filters("lx/elementor/blocked_widget_category", $w["category"], $widget),
-            ''
+            match($widget->get_name()) {
+                "video" => $io ?? $widget->get_settings_for_display("youtube_url") ?? $widget->get_settings_for_display("vimeo_url") ?? $widget->get_settings_for_display("dailymotion_url"),
+                default => ""
+            }
         );
-        echo "<div class='lx-wpconsent-blocked-widget elementor-element'>" . $placeholder_html . "<!--";
+        $atts = apply_filters("lx/elementor/widget_placeholder_attributes", ["class" => "lx-wpconsent-blocked-widget elementor-element lx-wpconsent-blocked-widget-" . $widget->get_name(), "style" => ""], $widget);
+        $atts = array_map(fn($key) => esc_attr($key) . '="' . esc_attr($atts[$key]) . '"', array_keys($atts));
+        $atts = implode(" ", $atts);
+        echo "<div " . $atts . ">" . $placeholder_html . "<!--";
         $lx_elementor_widget_ids_to_block[] = $widget->get_id();
     }
 }
@@ -59,6 +67,20 @@ function lx_wpconsent_elementor_widget_special_cases(bool $should_block, Widget_
     };
 }
 add_filter("lx/elementor/should_block_widget", "lx_wpconsent_elementor_widget_special_cases", 20, 2);
+
+function lx_wpconsent_elementor_placeholder_attributes(array $attributes, Widget_Base $widget): array
+{
+    switch($widget->get_name()) {
+        case "video":
+            $ar = $widget->get_settings_for_display("aspect_ratio") ?? "169";
+            $ratio = $widget->get_controls("aspect_ratio")["selectors_dictionary"][$ar];
+            $attributes["style"] .= "--aspect-ratio: $ratio;";
+            $attributes["class"] .= " lx-wpconsent-ratio-placeholder";
+            break;
+    }
+    return $attributes;
+}
+add_filter("lx/elementor/widget_placeholder_attributes", "lx_wpconsent_elementor_placeholder_attributes", 20, 2);
 
 function lx_wpcontent_elementor_widget_service(string $service, Widget_Base $widget): string
 {
