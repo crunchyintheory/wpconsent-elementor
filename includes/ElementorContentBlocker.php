@@ -36,7 +36,7 @@ function lx_wpconsent_elementor_widget_filter(Widget_Base $widget): void
             '',
             apply_filters("lx/elementor/blocked_widget_service", $w["service"], $widget),
             apply_filters("lx/elementor/blocked_widget_category", $w["category"], $widget),
-            match($widget->get_name()) {
+            $io ? "" : match($widget->get_name()) {
                 "video" => $widget->get_settings_for_display("youtube_url") ?? $widget->get_settings_for_display("vimeo_url") ?? $widget->get_settings_for_display("dailymotion_url"),
                 default => ""
             }
