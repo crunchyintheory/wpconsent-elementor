@@ -37,10 +37,11 @@ function lx_wpconsent_elementor_widget_filter(Widget_Base $widget): void
             apply_filters("lx/elementor/blocked_widget_service", $w["service"], $widget),
             apply_filters("lx/elementor/blocked_widget_category", $w["category"], $widget),
             match($widget->get_name()) {
-                "video" => $io ?? $widget->get_settings_for_display("youtube_url") ?? $widget->get_settings_for_display("vimeo_url") ?? $widget->get_settings_for_display("dailymotion_url"),
+                "video" => $widget->get_settings_for_display("youtube_url") ?? $widget->get_settings_for_display("vimeo_url") ?? $widget->get_settings_for_display("dailymotion_url"),
                 default => ""
             }
         );
+        if($io) $placeholder_html = preg_replace("/<img [^>]*>/", '<img decoding=\"async\" src="' . $io . '" />', $placeholder_html);
         $atts = apply_filters("lx/elementor/widget_placeholder_attributes", ["class" => "lx-wpconsent-blocked-widget elementor-element lx-wpconsent-blocked-widget-" . $widget->get_name(), "style" => ""], $widget);
         $atts = array_map(fn($key) => esc_attr($key) . '="' . esc_attr($atts[$key]) . '"', array_keys($atts));
         $atts = implode(" ", $atts);
