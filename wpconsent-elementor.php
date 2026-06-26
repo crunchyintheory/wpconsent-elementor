@@ -4,7 +4,6 @@
  * Description: Elementor compatibility fixes for WPConsent
  * Author: Sigrid Rittby
  * License: GPLv2
- * Requires Plugins: wpconsent-cookies-banner-privacy-suite
  * Version: 1.0
  */
 
