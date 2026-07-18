@@ -4,7 +4,7 @@
  * Description: Elementor compatibility fixes for WPConsent
  * Author: Sigrid Rittby
  * License: GPLv2
- * Version: 1.0
+ * Version: 1.0.1
  */
 
 if (!defined('ABSPATH')) {
@@ -72,3 +72,14 @@ function lx_wpconsent_scripts(): void
     wp_enqueue_script("lx-wpconsent-compat-js", plugin_dir_url(__FILE__) . 'assets/js/wpconsent-elementor-compat.js', [], filemtime(plugin_dir_path(__FILE__) . 'assets/js/wpconsent-elementor-compat.js'), true);
 }
 add_action("wp_enqueue_scripts", "lx_wpconsent_scripts");
+
+// Disable auto-updates as this plugin is not distributed via wordpress.org
+add_filter("site_transient_update_plugins", function($value) {
+    $plugin = plugin_basename(__FILE__);
+    if(isset($value) && is_object($value)) {
+        if(isset($value->response[$plugin])) {
+            unset($value->response[$plugin]);
+        }
+    }
+    return $value;
+});
