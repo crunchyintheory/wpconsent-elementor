@@ -70,7 +70,7 @@ add_action("admin_notices", "lx_wpconsent_admin_notices");
 function lx_wpconsent_scripts(): void
 {
     wp_enqueue_style("lx-wpconsent-compat-css", plugin_dir_url(__FILE__) . "assets/css/wpconsent-elementor-compat.css");
-    wp_enqueue_script("lx-wpconsent-compat-js", plugin_dir_url(__FILE__) . "assets/js/wpconsent-elementor-compat.js", ["wpconsent-frontend-js"], filemtime(plugin_dir_path(__FILE__) . "assets/js/wpconsent-elementor-compat.js"), true);
+    wp_enqueue_script("lx-wpconsent-compat-js", plugin_dir_url(__FILE__) . "assets/js/wpconsent-elementor-compat.js", ["wpconsent-frontend-js"], "1.0.2", true);
 }
 add_action("wp_enqueue_scripts", "lx_wpconsent_scripts");
 
