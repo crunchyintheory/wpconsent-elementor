@@ -86,7 +86,7 @@ function lx_wpconsent_elementor_placeholder_attributes(array $attributes, Widget
 }
 add_filter("lx/elementor/widget_placeholder_attributes", "lx_wpconsent_elementor_placeholder_attributes", 20, 2);
 
-function lx_wpcontent_elementor_widget_service(string $service, Widget_Base $widget): string
+function lx_wpconsent_elementor_widget_service(string $service, Widget_Base $widget): string
 {
     return match($widget->get_name()) {
         "video" => $widget->get_settings_for_display("video_type"),
@@ -95,4 +95,4 @@ function lx_wpcontent_elementor_widget_service(string $service, Widget_Base $wid
         default => $service
     };
 }
-add_filter("lx/elementor/blocked_widget_service", "lx_wpcontent_elementor_widget_service", 20, 2);
+add_filter("lx/elementor/blocked_widget_service", "lx_wpconsent_elementor_widget_service", 20, 2);
