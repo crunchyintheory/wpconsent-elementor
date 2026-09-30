@@ -5,14 +5,14 @@
  * Author: Sigrid Rittby
  * Author URI: https://lumence.dev/plugin/wpconsent-elementor
  * License: GPLv2
- * Version: 1.0.1
+ * Version: 1.0.2
  */
 
-if (!defined('ABSPATH')) {
+if (!defined("ABSPATH")) {
     exit; // Exit if accessed directly
 }
 
-require_once __DIR__ . '/includes/ElementorContentBlocker.php';
+require_once __DIR__ . "/includes/ElementorContentBlocker.php";
 
 function lx_wpconsent_blocked_scripts(array $categorized_scripts): array
 {
@@ -21,11 +21,11 @@ function lx_wpconsent_blocked_scripts(array $categorized_scripts): array
 
     return $categorized_scripts;
 }
-add_filter( 'wpconsent_blocked_scripts', "lx_wpconsent_blocked_scripts", 10, 2 );
+add_filter( "wpconsent_blocked_scripts", "lx_wpconsent_blocked_scripts", 10, 2 );
 
 function lx_wpconsent_force_service_detection(array $data): void
 {
-    $categories = apply_filters("lx_wpconsent_forced_services", ["marketing" => ["youtube","google-maps"]]);
+    $categories = apply_filters("lx_wpconsent_forced_services", []);
     $all = array_unique(array_merge($data["services_needed"], ...array_values($categories)));
 
     wpconsent()->file_cache->delete("services");
@@ -48,12 +48,12 @@ function lx_wpconsent_force_service_detection(array $data): void
     $data["services_needed"] = $all;
 
     $scanner_data = array(
-        'date' => current_time( 'mysql' ),
-        'data' => $data,
+        "date" => current_time( "mysql" ),
+        "data" => $data,
     );
     update_option("wpconsent_scanner_data", $scanner_data);
 }
-add_action( 'wpconsent_scan_data_saved', "lx_wpconsent_force_service_detection", 99, 1 );
+add_action( "wpconsent_scan_data_saved", "lx_wpconsent_force_service_detection", 99, 1 );
 
 function lx_wpconsent_admin_notices(): void
 {
@@ -69,8 +69,8 @@ add_action("admin_notices", "lx_wpconsent_admin_notices");
 
 function lx_wpconsent_scripts(): void
 {
-    wp_enqueue_style("lx-wpconsent-compat-css", plugin_dir_url(__FILE__) . 'assets/css/wpconsent-elementor-compat.css');
-    wp_enqueue_script("lx-wpconsent-compat-js", plugin_dir_url(__FILE__) . 'assets/js/wpconsent-elementor-compat.js', [], filemtime(plugin_dir_path(__FILE__) . 'assets/js/wpconsent-elementor-compat.js'), true);
+    wp_enqueue_style("lx-wpconsent-compat-css", plugin_dir_url(__FILE__) . "assets/css/wpconsent-elementor-compat.css");
+    wp_enqueue_script("lx-wpconsent-compat-js", plugin_dir_url(__FILE__) . "assets/js/wpconsent-elementor-compat.js", ["wpconsent-frontend-js"], filemtime(plugin_dir_path(__FILE__) . "assets/js/wpconsent-elementor-compat.js"), true);
 }
 add_action("wp_enqueue_scripts", "lx_wpconsent_scripts");
 

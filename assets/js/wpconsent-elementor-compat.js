@@ -1,10 +1,10 @@
 window.addEventListener("wpconsent_consent_saved", function() {
-    //window.location.reload();
+    window.location.reload();
 });
-window.addEventListener("wpconsent_consent_processed", function(event) {
+/*window.addEventListener("wpconsent_consent_processed", function(event) {
     const preferences = event.detail;
     console.log(preferences);
-});
+});*/
 
 const existingPreferences = window.WPConsent.getCookie( 'wpconsent_preferences' );
 let preferences = {};
