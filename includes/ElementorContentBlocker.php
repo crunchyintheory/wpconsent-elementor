@@ -45,13 +45,16 @@ function lx_wpconsent_elementor_widget_filter(Widget_Base $widget): void
         $atts = apply_filters("lx/elementor/widget_placeholder_attributes", ["class" => "lx-wpconsent-blocked-widget elementor-element lx-wpconsent-blocked-widget-" . $widget->get_name(), "style" => ""], $widget);
         $atts = array_map(fn($key) => esc_attr($key) . '="' . esc_attr($atts[$key]) . '"', array_keys($atts));
         $atts = implode(" ", $atts);
-        echo "<div " . $atts . ">" . $placeholder_html . "<!--";
+
+        //PHPCS - We aren't concerned with filtering the already-printed html from Elementor.
+        echo "<div " . $atts . ">" . $placeholder_html . "<!--"; //phpcs:ignore WordPress.Security.EscapeOutput
         $lx_elementor_widget_ids_to_block[] = $widget->get_id();
     }
 }
 if(!is_admin()) add_filter("elementor/frontend/widget/before_render", "lx_wpconsent_elementor_widget_filter", 10, 1);
 
-function lx_wpconsent_elementor_after_render(Widget_Base $widget): void {
+function lx_wpconsent_elementor_after_render(Widget_Base $widget): void
+{
     global $lx_elementor_widget_ids_to_block;
     if(in_array($widget->get_id(), $lx_elementor_widget_ids_to_block)) {
         echo "--></div>";

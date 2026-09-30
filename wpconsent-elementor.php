@@ -3,6 +3,7 @@
  * Plugin Name: WPConsent Elementor
  * Description: Elementor compatibility fixes for WPConsent
  * Author: Sigrid Rittby
+ * Author URI: https://lumence.dev/plugin/wpconsent-elementor
  * License: GPLv2
  * Version: 1.0.1
  */
@@ -34,12 +35,12 @@ function lx_wpconsent_force_service_detection(array $data): void
         $services_diff = array_diff($services, array_column($data["scripts"][$category] ?? [], "name"));
         foreach($services_diff as $service) {
             $data["scripts"][$category][] = [
-                "name" => $service,
-                "service" => $services_needed[$service]["label"],
-                "logo" => $services_needed[$service]["logo"],
-                "cookies" => $services_needed[$service]["cookies"],
+                "name"        => $service,
+                "service"     => $services_needed[$service]["label"],
+                "logo"        => $services_needed[$service]["logo"],
+                "cookies"     => $services_needed[$service]["cookies"],
                 "description" => $services_needed[$service]["description"],
-                "url" => $services_needed[$service]["service_url"]
+                "url"         => $services_needed[$service]["service_url"]
             ];
         }
     }
@@ -59,7 +60,7 @@ function lx_wpconsent_admin_notices(): void
     ?>
     <?php if(get_option("elementor_local_google_fonts", 0) != 1): ?>
     <div class="notice notice-warning">
-        Your site is loading remote Google Fonts and is not GDPR-compliant. <a href="<?php echo get_admin_url(null, "/admin.php?page=elementor-settings#tab-performance"); ?>">Click here</a> to fix.
+        Your site is loading remote Google Fonts and is not GDPR-compliant. <a href="<?php echo esc_url(get_admin_url(null, "/admin.php?page=elementor-settings#tab-performance")); ?>">Click here</a> to fix.
     </div>
     <?php endif; ?>
     <?php
